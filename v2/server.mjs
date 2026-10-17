@@ -10,7 +10,9 @@ import {BrowserRouter,sites} from './browser.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url));
 function equal(a,b){const x=Buffer.from(a||''),y=Buffer.from(b);return x.length===y.length&&timingSafeEqual(x,y);}
 async function jsonBody(req){let body='';for await(const chunk of req){body+=chunk;if(Buffer.byteLength(body)>32768)throw new Error('请求内容过长');}return JSON.parse(body||'{}');}
-export function makeServer(runner,{token=randomBytes(32).toString('hex')}={}) {
+export function makeServer(runner,{token=randomBytes(32).toString('hex'),blockedPlatforms=(process.env.COLLECTOR_BLOCKED_PLATFORMS||'').split(',').filter(Boolean)}={}) {
+  const blocked=new Set(blockedPlatforms);
+  const holdMessage='该平台的真实采集已暂停：已报告访问风控，暂不创建、继续任务或自动打开平台。合成演示仍可使用。';
   let loginBusy=false;
   const server=http.createServer(async(req,res)=>{
     res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');res.setHeader('Referrer-Policy','no-referrer');
@@ -24,9 +26,10 @@ export function makeServer(runner,{token=randomBytes(32).toString('hex')}={}) {
       if(url.pathname.startsWith('/api/')){
         if(!equal(req.headers['x-collector-token'],token))return send(403,{error:'请求凭证无效，请重新打开本地首页'});
         if(req.method==='GET'&&url.pathname==='/api/tasks')return send(200,{tasks:runner.list(),active:runner.active});
-        if(req.method==='POST'&&url.pathname==='/api/tasks')return send(201,await runner.create(await jsonBody(req)));
+        if(req.method==='POST'&&url.pathname==='/api/tasks'){const input=await jsonBody(req);if(input.mode!=='demo'&&blocked.has(input.platform))return send(409,{error:holdMessage});return send(201,await runner.create(input));}
         if(req.method==='POST'&&url.pathname==='/api/login'){
           const {platform}=await jsonBody(req);if(!sites[platform])throw new Error('平台无效');
+          if(blocked.has(platform))return send(409,{error:holdMessage});
           if(runner.busy||loginBusy)return send(409,{error:'请先暂停任务，并等待当前操作结束后再打开登录页面'});
           loginBusy=true;try{await runner.browser.login(platform);}finally{loginBusy=false;}return send(200,{message:'已打开采集浏览器；请在该窗口自行登录，再创建或继续任务'});
         }
@@ -34,7 +37,7 @@ export function makeServer(runner,{token=randomBytes(32).toString('hex')}={}) {
         if(!match)return send(404,{error:'接口不存在'});
         const [,id,action]=match;const task=runner.get(id);
         if(req.method==='GET'&&!action)return send(200,{...publicTask(task),preview:task.comments.slice(-20)});
-        if(req.method==='POST'&&action&&action!=='export')return send(200,await runner.action(id,action));
+        if(req.method==='POST'&&action&&action!=='export'){if(['resume','retry'].includes(action)&&task.config.mode!=='demo'&&blocked.has(task.config.platform))return send(409,{error:holdMessage});return send(200,await runner.action(id,action));}
         if(req.method==='GET'&&action==='export'){
           if(url.searchParams.get('format')==='csv'){res.setHeader('Content-Disposition',`attachment; filename="comments-${id}.csv"`);return send(200,Core.csv(task.comments),'text/csv; charset=utf-8');}
           res.setHeader('Content-Disposition',`attachment; filename="comments-${id}.json"`);return send(200,{schema_version:2,mode:task.config.mode,scope:'loaded_comments_only',platform:task.config.platform,comments:task.comments});

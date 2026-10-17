@@ -43,6 +43,8 @@
 
 环境变量：`PORT`（默认8765）、`COLLECTOR_DATA_DIR`（默认项目 `private/v2`）、`COLLECTOR_BROWSER`（chrome/msedge/chromium）。程序运行时需要保持电脑唤醒、网络可用和终端未关闭，不是云端定时服务。
 
+Windows 采集窗口会读取当前已启用的系统代理配置，不修改系统设置；也可用 `COLLECTOR_PROXY=http://主机:端口` 显式指定代理。PAC配置仍交给浏览器处理。`COLLECTOR_BLOCKED_PLATFORMS` 为逗号分隔的暂停平台清单，对真实任务创建、继续、重试和登录入口生效，既有导出仍可使用。
+
 ## 测试
 
 ```bash
@@ -53,3 +55,5 @@ npm run test:v2:browser
 ```
 
 前三项使用合成数据/离线DOM；最后一项使用真实Chromium打开本地界面，用合成演示验证任务和下载，不访问社交平台。测试状态见根目录 `TEST_RESULTS.md`。
+
+使用已安装的 Chrome 运行界面回归测试，PowerShell 执行 `$env:COLLECTOR_TEST_BROWSER='chrome'; npm run test:v2:browser`。其中包括小红书可见搜索框、新搜索路由、签名帖子链接的合成浏览器回归测试，不访问平台。

@@ -2,7 +2,7 @@
 <header><div class="logo">SC<span>2</span></div><div><h1>评论采集工作台</h1><p>设定关键词，让本机浏览器完成搜索与逐帖采集。</p></div><span class="badge">V2 · 实验版</span></header>
 <main><section class="setup"><div class="sectionhead"><span>01 / 创建任务</span><small>全部数据保存在本机</small></div>
 <form id="task-form"><label>运行模式<select name="mode"><option value="live">真实采集 · 使用本机浏览器</option><option value="demo">合成演示 · 不访问平台</option></select></label>
-<label>平台<select id="platform" name="platform"><option value="bilibili">B站</option><option value="xiaohongshu">小红书（适配待实测）</option><option value="douyin">抖音（适配待实测）</option></select></label>
+<label>平台<select id="platform" name="platform"><option value="bilibili">B站</option><option value="xiaohongshu" selected>小红书</option><option value="douyin">抖音（适配待实测）</option></select></label>
 <label>搜索关键词<textarea name="keywords" rows="3" placeholder="广州 数据分析 工作体验&#10;广州 双休 公司" required maxlength="1000"></textarea><small>每行一个，或用逗号分隔；最多10个。</small></label>
 <div class="twocol"><label>最多帖子数<input name="maxPosts" type="number" value="10" min="1" max="50" required></label><label>每帖最多评论<input name="perPost" type="number" value="100" min="1" max="500" required></label></div>
 <label>评论关键词过滤（可留空）<input name="filter" placeholder="双休,加班,工资" maxlength="500"><small>任一关键词命中即保存；过滤不影响搜索。</small></label>

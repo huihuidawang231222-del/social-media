@@ -27,7 +27,7 @@ export function postUrl(platform,value) {
     const u=new URL(value);if(u.protocol!=='https:')return null;
     if(Core.platform(u.hostname)!==platform)return null;
     if(platform==='bilibili'&&!/^\/video\/(BV[\da-z]+|av\d+)\/?$/i.test(u.pathname))return null;
-    if(platform==='xiaohongshu'&&!/^\/(explore|discovery\/item)\/[\da-f]+\/?$/i.test(u.pathname))return null;
+    if(platform==='xiaohongshu'&&!/^\/(explore|search_result|discovery\/item)\/[\da-f]+\/?$/i.test(u.pathname))return null;
     if(platform==='douyin'&&!/^\/video\/\d+\/?$/.test(u.pathname)) {
       const id=u.searchParams.get('modal_id');if(!/^\d+$/.test(id || ''))return null;
       return 'https://www.douyin.com/video/'+id;
@@ -39,7 +39,13 @@ export function addPosts(task,urls) {
   const known=new Set(task.posts.map(p=>p.source_url));let added=0;
   for(const value of urls) {
     const url=postUrl(task.config.platform,value);if(!url)continue;
-    const source_url=Core.canonical(url);if(known.has(source_url))continue;
+    const canonical=new URL(Core.canonical(url));
+    if(task.config.platform==='xiaohongshu')canonical.pathname=canonical.pathname.replace(/^\/(search_result|discovery\/item)\//,'/explore/').replace(/\/$/,'');
+    const source_url=canonical.href;if(known.has(source_url)){
+      const existing=task.posts.find(p=>p.source_url===source_url);
+      if(task.config.platform==='xiaohongshu'&&existing.status==='pending'&&!new URL(existing.url).searchParams.has('xsec_token')&&new URL(url).searchParams.has('xsec_token'))existing.url=url;
+      continue;
+    }
     if(task.posts.length>=task.config.maxPosts)break;
     known.add(source_url);task.posts.push({url,source_url,status:'pending',count:0,round:0,idle:0,error:''});added++;
   } return added;

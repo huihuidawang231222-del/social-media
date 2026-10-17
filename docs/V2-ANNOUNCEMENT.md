@@ -10,6 +10,23 @@
 
 **不用你搜完一篇、点开一篇、复制一篇。**
 
+### 界面长这样
+
+下面是实际运行界面的截图，使用合成演示数据，展示操作和结果样式。
+
+填关键词、设数量，点“开始采集”：
+
+![关键词与采集设置](https://raw.githubusercontent.com/huihuidawang231222-del/social-media/main/docs/images/01-workbench.png)
+
+任务结束后，直接点 CSV 或 JSON 导出：
+
+![任务完成与导出入口，合成演示](https://raw.githubusercontent.com/huihuidawang231222-del/social-media/main/docs/images/02-completed.png)
+
+也可以展开详情，先看看收集到了什么：
+
+![评论预览，合成演示数据](https://raw.githubusercontent.com/huihuidawang231222-del/social-media/main/docs/images/03-preview.png)
+
+
 拿到表格之后，可以按自己的问题去找：
 
 - 做电商：有人嫌肩带勒，有人嫌电脑放不下——这些话可以拿来核对选品和详情页有没有回答买家的顾虑。

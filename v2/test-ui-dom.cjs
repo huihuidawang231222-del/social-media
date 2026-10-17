@@ -13,7 +13,7 @@ const vm=require('node:vm'),fs=require('node:fs/promises'),assert=require('node:
     const fakeURL={createObjectURL:blob=>{downloadBlob=blob;return 'blob:synthetic';},revokeObjectURL(){}};
     const ctx=vm.createContext({document,FormData:FormDataMock,fetch:(url,options)=>fetch(base+url,options),URL:fakeURL,console,setInterval:fn=>{poll=fn;},setTimeout:(fn,ms)=>{const timer=setTimeout(fn,ms);timer.unref();return timer;}});
     vm.runInContext(await fs.readFile(path.join(__dirname,'web/app.js'),'utf8'),ctx);
-    for(let i=0;i<100&&document.getElementById('connection').textContent!=='本地服务已连接';i++)await new Promise(r=>setTimeout(r,10));
+    for(let i=0;i<100&&document.getElementById('connection').textContent!=='已连接';i++)await new Promise(r=>setTimeout(r,10));
     await form.onsubmit({preventDefault(){},currentTarget:form});
     for(let i=0;i<200&&runner.busy;i++)await new Promise(r=>setTimeout(r,10));await poll();
     assert.equal(runner.tasks[0].status,'completed');assert.equal(runner.tasks[0].comments.length,6);
@@ -21,7 +21,7 @@ const vm=require('node:vm'),fs=require('node:fs/promises'),assert=require('node:
     assert.equal(document.getElementById('tasks').querySelectorAll('img').length,0,'untrusted keywords render as text');
     const buttons=[...document.getElementById('tasks').querySelectorAll('button')];
     await buttons.find(b=>b.textContent==='CSV').onclick();assert.ok((await downloadBlob.text()).includes('[合成演示]'));
-    await buttons.find(b=>b.textContent==='详情 / 日志').onclick();
+    await buttons.find(b=>b.textContent==='详情').onclick();
     for(let i=0;i<100&&!document.getElementById('detail-content').textContent.includes('最近20条预览');i++)await new Promise(r=>setTimeout(r,10));
     assert.ok(document.getElementById('detail-content').textContent.includes('合成演示'));assert.equal(document.getElementById('detail-content').querySelectorAll('img').length,0);
     console.log('PASS simulated UI + real HTTP + demo worker: form -> queue -> progress -> CSV action -> preview, XSS-safe text');

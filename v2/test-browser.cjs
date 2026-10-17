@@ -8,12 +8,14 @@ const fs=require('node:fs/promises'),path=require('node:path'),os=require('node:
     browser=await chromium.launch({headless:true,...(process.env.COLLECTOR_TEST_BROWSER?{channel:process.env.COLLECTOR_TEST_BROWSER}:{})});const page=await browser.newPage({acceptDownloads:true});
     await page.route('**/*',route=>new URL(route.request().url()).hostname==='127.0.0.1'?route.continue():route.abort());
     await page.goto('http://127.0.0.1:'+server.address().port);
-    await page.getByLabel('运行模式').selectOption('demo');await page.locator('textarea[name="keywords"]').fill('合成浏览器演示');await page.getByLabel('最多帖子数').fill('2');await page.getByLabel('每帖最多评论').fill('3');await page.getByRole('checkbox').check();await page.getByRole('button',{name:'创建并开始任务 →'}).click();
+    await page.getByLabel('运行模式').selectOption('demo');await page.locator('textarea[name="keywords"]').fill('合成浏览器演示');await page.getByLabel('最多帖子数').fill('2');await page.getByLabel('每帖最多评论').fill('3');await page.getByRole('checkbox').check();await page.getByRole('button',{name:'开始采集'}).click();
     await page.getByText('已结束',{exact:true}).waitFor({timeout:15000});assert.equal(runner.tasks[0].comments.length,6);
     const downloaded=page.waitForEvent('download');await page.getByRole('button',{name:'CSV',exact:true}).click();const download=await downloaded;const contents=await fs.readFile(await download.path(),'utf8');assert.ok(contents.includes('[合成演示]'));assert.ok(contents.includes('source_url'));
-    await page.getByRole('button',{name:'详情 / 日志'}).click();await page.getByText('最近20条预览',{exact:true}).waitFor();
+    await page.getByRole('button',{name:'详情'}).click();await page.getByText('最近20条预览',{exact:true}).waitFor();
     await fs.mkdir(path.join(__dirname,'../private/v2-tests'),{recursive:true});await page.screenshot({path:path.join(__dirname,'../private/v2-tests/workbench.png'),fullPage:true});
-    console.log('PASS browser UI: create demo -> search/collect -> progress -> CSV download -> preview');
+    await page.setViewportSize({width:390,height:844});
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile viewport should not scroll horizontally');
+    console.log('PASS browser UI: create demo -> search/collect -> progress -> CSV download -> preview; 390px layout');
     const {LiveBrowser}=await import('./browser.mjs');const {createTask,addPosts}=await import('./model.mjs');
     const fixture=await browser.newContext();await fixture.route('**/*',route=>route.fulfill({contentType:'text/html',body:`<textarea style="opacity:0.00001" placeholder="搜索小红书"></textarea><div><div><textarea id="search-input-in-feeds"></textarea></div><button class="single-line-search-btn">搜索</button></div><a href="/explore/ffffffffffffffffffffffff">首页推荐</a><div id="results"></div><script>document.querySelector('button').onclick=()=>{const keyword=document.querySelector('#search-input-in-feeds').value;history.pushState({},'', '/search_result_ai?keyword='+encodeURIComponent(encodeURIComponent(keyword)));document.querySelector('#results').innerHTML='<section class="note-item"><a class="cover" href="/search_result/0123456789abcdef01234567?xsec_token=synthetic&xsec_source=pc_search">合成搜索结果</a></section>';};</script>`}));
     const live=new LiveBrowser('/unused-fixture');live.context=fixture;live.page=await fixture.newPage();live.wait=async()=>{};

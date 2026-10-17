@@ -1,6 +1,14 @@
 # Social Comment Collector｜社交媒体评论采集助手
 
-独立的免费 Chrome / Edge 浏览器扩展，面向小红书、抖音、B站网页端已加载评论。无服务器、API Key或远程上传。
+免费、数据保存在本机的 Chrome / Edge 评论采集实验工具：面向小红书、抖音、B站已加载评论，支持关键词筛选、去重与 CSV/JSON 导出。正在招募开发者验证页面适配和完整使用流程。
+
+**v0.1.0 实验版 · 欢迎测试与贡献**
+
+[下载源码 ZIP](https://github.com/huihuidawang231222-del/social-media/archive/refs/heads/main.zip) · [参与开发者测试招募](https://github.com/huihuidawang231222-del/social-media/issues/1) · [报告问题](https://github.com/huihuidawang231222-del/social-media/issues/new/choose) · [贡献指南](CONTRIBUTING.md)
+
+适合想把页面已显示的评论整理为表格、研究网页组件结构，或参与浏览器扩展适配的开发者。B站提取函数已有真实页面探测记录，小红书和抖音登录后的适配仍需协助验证。请先阅读下方实测状态。
+
+**English:** An experimental, local-only Chrome/Edge extension for collecting comments already loaded on Xiaohongshu, Douyin and Bilibili pages. Keyword filtering, deduplication and CSV/JSON export. Looking for developers to test adapters and the full extension workflow. Platform coverage remains experimental.
 
 ## 安装
 

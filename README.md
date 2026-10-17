@@ -1,92 +1,79 @@
-# Social Comment Collector V2｜自动评论采集工作台
+# 评论收集站 V2｜从评论区里找需求
 
-**输入关键词，自动搜索帖子、逐帖采集、保存进度并统一导出。** 本地运行，无服务器或API Key，数据保存在你自己的电脑。
+做选品、做内容、做产品，最容易错过的线索，往往就在评论区。
 
-[下载项目 ZIP](https://github.com/huihuidawang231222-del/social-media/archive/refs/heads/main.zip) · [V2使用说明](v2/README.md) · [测试记录](TEST_RESULTS.md) · [反馈问题](https://github.com/huihuidawang231222-del/social-media/issues/new/choose)
+用户为什么犹豫？大家反复在问什么？现有产品哪里不好用？如果你也在一条条翻评论、复制到表格，可以试试这个本地评论收集工具。
 
-## V2 开始使用
+**输入关键词 → 自动搜索相关帖子 → 逐帖收集已加载评论 → 导出 CSV / JSON。**
 
-需要电脑安装 **Node.js 22+和Chrome**。下载ZIP并解压后：
+## 谁会用得上？
 
-- **Windows**：双击 `启动V2.cmd`，首次安装依赖后自动打开本地工作台。
-- **macOS / Linux**：在项目目录执行 `sh 启动V2.sh`。
-- 手动启动：`npm ci` → `npm start` → 打开 `http://127.0.0.1:8765`。
-
-首次先在界面选择“合成演示”试用；真实采集时在采集专用浏览器窗口正常登录平台，后续复用本地登录状态。
-
-## V2 能做什么
-
-| 功能 | 行为 |
+| 你在做什么 | 可以用评论研究什么 |
 |---|---|
-| 自动搜索 | 按关键词打开平台搜索页，发现可见帖子链接，去重加入队列 |
-| 自动逐帖采集 | 依次打开帖子、读取已加载评论、滚动，按关键词过滤 |
-| 任务管理 | 进度、日志、暂停、继续、取消与失败帖子重试 |
-| 断点续采 | 持续写入本地检查点；重启后继续，已保存评论去重 |
-| 导出 | 每任务CSV/JSON，保留来源和原始字段 |
-| 合成演示 | 不访问平台，运行完整模拟流程；数据明确标注合成 |
+| 电商选品、店铺运营 | 购买顾虑、使用痛点、规格和价格相关反馈，为选品与详情页提供线索 |
+| 品牌、市场运营 | 围绕品类或竞品关键词整理讨论样本，观察用户常用的表达 |
+| 内容创作、账号运营 | 收集反复出现的问题，整理下一期选题、教程与答疑方向 |
+| 产品、独立开发、用户研究 | 寻找功能诉求和替代方案讨论，再据此安排访谈与验证 |
+| 开源开发者 | 测试浏览器适配、任务队列、断点续采与数据导出，参与改进 |
 
-**V2仍为实验版：自动搜索与登录后逐帖采集尚未完成三个真实平台的全流程验证。** 之前B站的5条真实页面结果仅验证提取函数，不代表V2自动流程已通过。任务遇登录、验证码或访问限制会暂停，需你处理后手动继续。仅采集已加载样本，不保证全量，不自动展开全部楼中楼。
+以上是使用场景；工具负责采集和导出，不自动生成选品结论、情感分析或商业报告。
 
-English: A local task dashboard that discovers posts from keywords, collects loaded comments sequentially, saves checkpoints and exports CSV/JSON. Experimental adapters for Xiaohongshu, Douyin and Bilibili; live end-to-end coverage is not yet verified.
+## 下载到本地
 
-# V1 浏览器扩展（保留）
+**[点击下载完整源码 ZIP](https://github.com/huihuidawang231222-del/social-media/archive/refs/heads/main.zip)**
 
-免费、数据保存在本机的 Chrome / Edge 评论采集实验工具：面向小红书、抖音、B站已加载评论，支持关键词筛选、去重与 CSV/JSON 导出。正在招募开发者验证页面适配和完整使用流程。
+需要 **Node.js 22+ 和 Chrome**，当前提供源码版，尚非免安装 EXE。
 
-**v0.1.0 实验版 · 欢迎测试与贡献**
+1. 下载 ZIP 并解压。
+2. Windows 双击 `启动V2.cmd`；macOS / Linux 在项目目录运行 `sh 启动V2.sh`。
+3. 打开本地工作台，填写关键词、帖子数量和评论数量，点击“开始采集”。第一次真实采集需在采集窗口正常登录平台。
 
-[下载源码 ZIP](https://github.com/huihuidawang231222-del/social-media/archive/refs/heads/main.zip) · [参与开发者测试招募](https://github.com/huihuidawang231222-del/social-media/issues/1) · [报告问题](https://github.com/huihuidawang231222-del/social-media/issues/new/choose) · [贡献指南](CONTRIBUTING.md)
-
-适合想把页面已显示的评论整理为表格、研究网页组件结构，或参与浏览器扩展适配的开发者。B站提取函数已有真实页面探测记录，小红书和抖音登录后的适配仍需协助验证。请先阅读下方实测状态。
-
-**English:** An experimental, local-only Chrome/Edge extension for collecting comments already loaded on Xiaohongshu, Douyin and Bilibili pages. Keyword filtering, deduplication and CSV/JSON export. Looking for developers to test adapters and the full extension workflow. Platform coverage remains experimental.
-
-## 安装
-
-1. 下载本仓库 ZIP 并解压。
-2. 电脑 Chrome 打开 `chrome://extensions`，Edge 打开 `edge://extensions`，开启开发者模式。
-3. 点击“加载已解压的扩展程序”，选择本项目的 `extension` 文件夹。
-4. 正常登录目标平台，打开单个帖子并展开评论；点击工具栏扩展图标。
-5. 确认采集用途后，选择当前页面采集或滚动采集，随后导出CSV/JSON。
-
-需电脑端支持扩展的浏览器，未发布应用商店；Android原生ChatGPT无法安装此扩展。
-
-## 功能
-
-- 从已加载页面提取评论正文、作者显示名称、原始时间、点赞文本及来源链接。
-- 关键词筛选、跨次去重、本地保存、CSV/JSON导出。
-- 每3秒最多扫描/滚动一次，最多120轮，连续5轮无新增停止；单次新增1–5000条，本地最多20000条。
-- 刷新后可重新采集并去重，不保存滚动位置、不自动恢复任务；关闭弹窗不会停止，关闭/刷新页面会停止。
-- 自定义CSS选择器，支持开放Shadow DOM和表情图片alt文本。
-
-## 实测状态
-
-| 平台 | 结果 |
-|---|---|
-| 小红书 | 离线DOM通过；真实帖子遇登录窗口，评论适配未验证 |
-| 抖音 | 离线DOM通过；真实帖子遇登录窗口，评论适配未验证 |
-| B站 | 修复后的提取函数在真实页面读到5条预览评论/回复，各字段非空；扩展完整端到端未验证 |
-
-6项单元测试、4组离线DOM测试通过。完整浏览器安装、真实滚动新增及导出文件下载尚未实测通过，当前仍为实验版。详细证据见[测试记录](TEST_RESULTS.md)。
-
-## 限制与数据
-
-只采集页面已加载内容，不保证全量。楼中楼需手动展开，不自动搜索或点击加载更多。不提供登录、验证码或平台限制绕过。
-
-作者是显示名称，不代表身份核验；时间和点赞保留页面文本。无ID的相同作者/时间/正文可能合并。来源URL会去掉跟踪参数，含签名参数的链接可能无法重开。所有记录默认待核实、许可未审核，不自动产生企业评价。
-
-数据保存在本机扩展存储；导出按当前关键词筛选所有本地记录，包括以前帖子。工具不读取Cookie或密码，不上传数据，不自动匿名化正文。仅处理你有权采集的内容，导出后自行检查个人信息与再分发权限，不要把原始评论提交到GitHub。
-
-## 开发测试
+开发者可直接拉取：
 
 ```bash
-npm install
+git clone https://github.com/huihuidawang231222-del/social-media.git
+cd social-media
+npm ci
+npm start
+```
+
+访问 `http://127.0.0.1:8765`。首次可选择“合成演示”体验完整流程。
+
+## 这一版有什么
+
+- 自动发现帖子并逐帖采集，减少逐条搜索和点开的操作。
+- 暂停、继续、失败重试和断点续采。
+- 按关键词筛选、去重，按任务导出 CSV / JSON。
+- 数据和登录配置保存在本机，不需要部署服务器或填写模型 API Key。
+- 新版简洁像素风工作台，常用操作直接显示，高级设置默认折叠。
+
+## 当前实测范围
+
+小红书已有真实 Chrome 下的有限验收：**1 个帖子、3 条评论，任务完成并实际下载 CSV / JSON**。不代表多帖、大批量或所有关键词均已验证。
+
+新版界面浏览器回归、390px 窄屏检查、21 项单元测试和离线 DOM 测试通过。演示与合成回归不代表真实平台采集成功。
+
+抖音真实完整流程仍待验证；B站因访问限制目前停用。工具只读取可访问、已加载的评论，不保证全量；遇登录、验证码或访问限制会暂停。仅采集有权使用的内容，发布样本前请处理个人信息。
+
+## 想一起把它做实用？
+
+欢迎先用一个小任务试试。反馈时告诉我们：**你的使用场景、平台、操作步骤、预期和实际结果**。请勿上传 Cookie、账号信息或原始评论数据。
+
+[下载试用](https://github.com/huihuidawang231222-del/social-media/archive/refs/heads/main.zip) · [使用说明](https://github.com/huihuidawang231222-del/social-media/blob/main/v2/README.md) · [测试证据](https://github.com/huihuidawang231222-del/social-media/blob/main/TEST_RESULTS.md) · [提交反馈](https://github.com/huihuidawang231222-del/social-media/issues/new/choose)
+
+如果这个工具刚好能帮你少做一些复制粘贴，欢迎 Star，方便以后找到更新。
+
+## V1 浏览器扩展
+
+旧版扩展仍保留在 `extension/`，用于在已打开的单个帖子中采集。新用户建议从 V2 本地工作台开始。
+
+## 开发与贡献
+
+```bash
 npm test
 npm run test:dom
 npx playwright install chromium
-npm run test:browser
+npm run test:v2:browser
 ```
 
-离线DOM测试模拟布局、消息和存储，不替代真实浏览器。CI仅运行合成测试，不登录平台、不抓取真实评论。浏览器测试配置已提供，尚无运行通过证据。
-
-扩展规范参考：https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts
+更多信息见 [贡献指南](CONTRIBUTING.md)。

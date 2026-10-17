@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Social Comments 评论采集助手",
+  "version": "0.1.0",
+  "description": "在用户打开的页面采集已加载评论，本地去重、筛选并导出。",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "background": {"service_worker": "worker.js"},
+  "action": {"default_popup": "popup.html", "default_title": "评论采集助手"}
+}

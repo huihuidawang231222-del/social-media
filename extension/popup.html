@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>评论采集助手</title><link rel="stylesheet" href="popup.css"></head>
+<body><h1>评论采集助手</h1><p>小红书 · 抖音 · B站 / 页面适配实验版</p>
+<p>打开单个帖子并展开评论后使用。只读取页面内容，数据保存在本机。</p>
+<label>关键词（逗号分隔，任一命中）<input id="keywords" placeholder="双休,加班,广州"></label>
+<label>本次最多采集条数<input id="limit" type="number" min="1" max="5000" value="500"></label>
+<label><input id="authorized" type="checkbox">我已确认此内容可采集，仅用于获准的用途</label>
+<div><button id="scan">采集当前页面</button><button id="start">开始滚动采集</button><button id="stop">停止</button></div>
+<p id="status" role="status" aria-live="polite">正在读取状态…</p>
+<div><button id="csv">导出 CSV</button><button id="json">导出 JSON</button><button id="clear">清空本地记录</button></div>
+<details><summary>页面改版？高级选择器</summary>
+<p>填写 CSS 选择器覆盖当前平台适配。只在选定容器中取字段，避免混入页面正文。</p>
+<label>评论容器<input id="item" placeholder=".comment-item"></label>
+<label>评论正文<input id="text" placeholder=".content"></label>
+<label>作者（可选）<input id="author"></label>
+<label>时间（可选）<input id="time"></label>
+<label>点赞（可选）<input id="likes"></label>
+</details><p>只采集已加载内容；楼中楼须手动展开。不保证全量。刷新后可重新开始，已有记录会去重。关闭弹窗不停止，关闭/刷新页面会停止。</p>
+<script src="core.js"></script><script src="popup.js"></script></body></html>

@@ -1,0 +1,8 @@
+node_modules/
+*.csv
+*.jsonl
+exports/
+private/
+.env
+.env.*
+*.zip

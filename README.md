@@ -1,4 +1,35 @@
-# Social Comment Collector｜社交媒体评论采集助手
+# Social Comment Collector V2｜自动评论采集工作台
+
+**输入关键词，自动搜索帖子、逐帖采集、保存进度并统一导出。** 本地运行，无服务器或API Key，数据保存在你自己的电脑。
+
+[下载项目 ZIP](https://github.com/huihuidawang231222-del/social-media/archive/refs/heads/main.zip) · [V2使用说明](v2/README.md) · [测试记录](TEST_RESULTS.md) · [反馈问题](https://github.com/huihuidawang231222-del/social-media/issues/new/choose)
+
+## V2 开始使用
+
+需要电脑安装 **Node.js 22+和Chrome**。下载ZIP并解压后：
+
+- **Windows**：双击 `启动V2.cmd`，首次安装依赖后自动打开本地工作台。
+- **macOS / Linux**：在项目目录执行 `sh 启动V2.sh`。
+- 手动启动：`npm ci` → `npm start` → 打开 `http://127.0.0.1:8765`。
+
+首次先在界面选择“合成演示”试用；真实采集时在采集专用浏览器窗口正常登录平台，后续复用本地登录状态。
+
+## V2 能做什么
+
+| 功能 | 行为 |
+|---|---|
+| 自动搜索 | 按关键词打开平台搜索页，发现可见帖子链接，去重加入队列 |
+| 自动逐帖采集 | 依次打开帖子、读取已加载评论、滚动，按关键词过滤 |
+| 任务管理 | 进度、日志、暂停、继续、取消与失败帖子重试 |
+| 断点续采 | 持续写入本地检查点；重启后继续，已保存评论去重 |
+| 导出 | 每任务CSV/JSON，保留来源和原始字段 |
+| 合成演示 | 不访问平台，运行完整模拟流程；数据明确标注合成 |
+
+**V2仍为实验版：自动搜索与登录后逐帖采集尚未完成三个真实平台的全流程验证。** 之前B站的5条真实页面结果仅验证提取函数，不代表V2自动流程已通过。任务遇登录、验证码或访问限制会暂停，需你处理后手动继续。仅采集已加载样本，不保证全量，不自动展开全部楼中楼。
+
+English: A local task dashboard that discovers posts from keywords, collects loaded comments sequentially, saves checkpoints and exports CSV/JSON. Experimental adapters for Xiaohongshu, Douyin and Bilibili; live end-to-end coverage is not yet verified.
+
+# V1 浏览器扩展（保留）
 
 免费、数据保存在本机的 Chrome / Edge 评论采集实验工具：面向小红书、抖音、B站已加载评论，支持关键词筛选、去重与 CSV/JSON 导出。正在招募开发者验证页面适配和完整使用流程。
 

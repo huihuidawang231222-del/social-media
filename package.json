@@ -1,15 +1,22 @@
 {
   "name": "social-comment-collector",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "node v2/server.mjs",
     "test": "node --test tests/*.test.mjs",
-    "test:dom": "node extension/test-offline-dom.cjs",
-    "test:browser": "node extension/test-dom.cjs"
+    "test:dom": "node extension/test-offline-dom.cjs && node v2/test-offline-dom.cjs && node v2/test-ui-dom.cjs",
+    "test:browser": "node extension/test-dom.cjs",
+    "test:v2:browser": "node v2/test-browser.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
   },
   "devDependencies": {
-    "linkedom": "0.18.12",
-    "playwright": "1.62.1"
+    "linkedom": "0.18.12"
   }
 }

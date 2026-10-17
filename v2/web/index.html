@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="local-token" content="__LOCAL_TOKEN__"><title>评论采集工作台 V2</title><link rel="stylesheet" href="/style.css"></head><body>
+<header><div class="logo">SC<span>2</span></div><div><h1>评论采集工作台</h1><p>设定关键词，让本机浏览器完成搜索与逐帖采集。</p></div><span class="badge">V2 · 实验版</span></header>
+<main><section class="setup"><div class="sectionhead"><span>01 / 创建任务</span><small>全部数据保存在本机</small></div>
+<form id="task-form"><label>运行模式<select name="mode"><option value="live">真实采集 · 使用本机浏览器</option><option value="demo">合成演示 · 不访问平台</option></select></label>
+<label>平台<select id="platform" name="platform"><option value="bilibili">B站</option><option value="xiaohongshu">小红书（适配待实测）</option><option value="douyin">抖音（适配待实测）</option></select></label>
+<label>搜索关键词<textarea name="keywords" rows="3" placeholder="广州 数据分析 工作体验&#10;广州 双休 公司" required maxlength="1000"></textarea><small>每行一个，或用逗号分隔；最多10个。</small></label>
+<div class="twocol"><label>最多帖子数<input name="maxPosts" type="number" value="10" min="1" max="50" required></label><label>每帖最多评论<input name="perPost" type="number" value="100" min="1" max="500" required></label></div>
+<label>评论关键词过滤（可留空）<input name="filter" placeholder="双休,加班,工资" maxlength="500"><small>任一关键词命中即保存；过滤不影响搜索。</small></label>
+<label>操作间隔<select name="intervalMs"><option value="4000">4秒</option><option value="8000">8秒</option><option value="15000">15秒</option></select></label>
+<details><summary>高级：自定义评论 CSS 选择器</summary><p>页面改版或采集0条时可覆盖规则。选择器留空则使用内置适配。</p><label>评论容器<input name="item" placeholder=".comment-item"></label><label>正文<input name="text" placeholder=".content"></label><label>作者<input name="author"></label><label>时间<input name="time"></label><label>点赞<input name="likes"></label></details>
+<label class="check"><input type="checkbox" name="authorized" required><span>我确认有权采集相关内容，并会检查导出中的个人信息与复用权限。</span></label>
+<button class="primary" type="submit">创建并开始任务 →</button><button id="login" type="button">打开所选平台登录窗口</button>
+</form><div class="note">首次使用请在采集专用浏览器窗口正常登录。之后复用本机登录状态。遇登录、验证码或访问限制会暂停；不保证全量，不自动展开全部楼中楼。<br>搜索和平台适配仍需真实环境验证。</div></section>
+<section class="workspace"><div class="sectionhead"><span>02 / 任务与结果</span><small id="connection">连接中…</small></div><div id="notice" role="status" aria-live="polite"></div><div id="tasks" class="tasks"><p class="empty">还没有任务。输入关键词，开始第一批采集。</p></div><section id="detail" hidden><div class="sectionhead"><span>任务详情</span><button id="close-detail" type="button">收起</button></div><div id="detail-content"></div></section></section></main>
+<footer>本地运行 / 无云端上传 / 按实际显示内容采集 · 关闭程序会停止运行，重启后手动继续。</footer><script type="module" src="/app.js"></script></body></html>

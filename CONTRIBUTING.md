@@ -2,6 +2,10 @@
 
 欢迎通过 [测试招募 Issue](https://github.com/huihuidawang231222-del/social-media/issues/1) 报告测试结果，或提交适配修复PR。
 
+## V2 测试入口
+
+先运行 `npm ci`、`npm start`，用合成演示检查任务，再在采集窗口正常登录做小规模真实测试。详见 [V2说明](v2/README.md)。请分别报告搜索链接发现、逐帖打开、评论提取、停止/续采和导出结果。`npm test` 与 `npm run test:dom` 是合成测试；`npm run test:v2:browser` 只验证本地合成界面，不代表平台实测。
+
 ## 优先欢迎的贡献
 
 - 小红书、抖音正常登录后的评论容器与字段适配。
